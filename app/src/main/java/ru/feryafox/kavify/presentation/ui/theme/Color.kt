@@ -1,4 +1,4 @@
-package ru.feryafox.kavify.ui.theme
+package ru.feryafox.kavify.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

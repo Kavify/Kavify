@@ -1,4 +1,4 @@
-package ru.feryafox.kavify.viewmodels
+package ru.feryafox.kavify.presentation.viewmodels
 
 import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
@@ -39,6 +39,20 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginWithApiKey(server: String, apiKey: String, onSuccess: () -> Unit) {
-        onSuccess()
+        viewModelScope.launch {
+            isLoading = true
+            errorMessage = null
+            try {
+                repository.setBaseUrl(server)
+                repository.login(apiKey)
+                preferences.saveAuthCredentials(repository.getClient().auth().credentials)
+                preferences.saveBaseUrl(server)
+                onSuccess()
+            } catch (e: Exception) {
+                errorMessage = "Ошибка входа: ${e.message}"
+            } finally {
+                isLoading = false
+            }
+        }
     }
 }

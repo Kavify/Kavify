@@ -9,6 +9,12 @@ import javax.inject.Singleton
 class PreferencesManager @Inject constructor(
     private val prefs: SharedPreferences
 ){
+    var isAuthed: Boolean
+        get() = prefs.getBoolean("is_authed", false)
+        set(value) = prefs.edit()
+            .putBoolean("is_authed", value)
+            .apply()
+
     fun saveAuthCredentials(
         kavita4JAuthCredentials: Kavita4JAuthCredentials
     ) = prefs.edit()

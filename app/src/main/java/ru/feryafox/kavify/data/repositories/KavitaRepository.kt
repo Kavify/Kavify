@@ -9,9 +9,9 @@ class KavitaRepository(
 ){
     fun setBaseUrl(baseUrl: String) = client.setBaseUrl(baseUrl)
 
-    suspend fun login(username: String, password: String) = withContext(Dispatchers.IO) { client.auth().login(username, password) }
+    suspend fun login(username: String, password: String) =  withContext(Dispatchers.IO) {client.auth().login(username, password) }
 
-    fun login(apiToken: String) = client.auth().login(apiToken)
+    suspend fun login(apiToken: String) = withContext(Dispatchers.IO) { client.auth().login(apiToken) }
 
     fun getClient() = client
 }

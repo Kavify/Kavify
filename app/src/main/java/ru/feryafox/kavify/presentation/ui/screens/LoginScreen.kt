@@ -1,4 +1,4 @@
-package ru.feryafox.kavify.ui.screens
+package ru.feryafox.kavify.presentation.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -11,13 +11,15 @@ import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
-import ru.feryafox.kavify.viewmodels.LoginViewModel
+import androidx.navigation.NavHostController
+import ru.feryafox.kavify.presentation.ui.Routes
+import ru.feryafox.kavify.presentation.viewmodels.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = hiltViewModel(),
-    onLoginSuccess: () -> Unit
+    navController: NavHostController,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     var serverAddress by remember { mutableStateOf("") }
     var login by remember { mutableStateOf("") }
@@ -94,9 +96,19 @@ fun LoginScreen(
             Button(
                 onClick = {
                     if (useApiKey) {
-                        viewModel.loginWithApiKey(serverAddress, apiKey, onLoginSuccess)
+                        viewModel.loginWithApiKey(serverAddress, apiKey) {
+                            // TODO вынести в отдельную функцию переходы
+                            // TODO вынести в Auth различные виды авторизации
+                            navController.navigate(Routes.SEARCH.path) {
+                                popUpTo(Routes.LOGIN.path) { inclusive = true }
+                            }
+                        }
                     } else {
-                        viewModel.login(serverAddress, login, password, onLoginSuccess)
+                        viewModel.login(serverAddress, login, password) {
+                            navController.navigate(Routes.SEARCH.path) {
+                                popUpTo(Routes.LOGIN.path) { inclusive = true }
+                            }
+                        }
                     }
                 },
                 enabled = !viewModel.isLoading

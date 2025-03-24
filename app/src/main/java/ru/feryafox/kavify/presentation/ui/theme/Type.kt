@@ -1,4 +1,4 @@
-package ru.feryafox.kavify.ui.theme
+package ru.feryafox.kavify.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
