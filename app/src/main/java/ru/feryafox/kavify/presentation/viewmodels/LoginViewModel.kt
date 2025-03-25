@@ -10,45 +10,45 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.feryafox.kavify.data.repositories.KavitaRepository
 import ru.feryafox.kavify.data.repositories.PreferencesManager
+import ru.feryafox.kavify.domain.exceptions.KavifyException
+import ru.feryafox.kavify.domain.servicies.AuthService
+import ru.feryafox.kavify.domain.servicies.Kavita4JService
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repository: KavitaRepository,
-    private val preferences: PreferencesManager
+    private val preferences: PreferencesManager,
+    private val authService: AuthService,
+    private val kavita4JService: Kavita4JService
 ) : ViewModel() {
     var errorMessage by mutableStateOf<String?>(null)
     var isLoading by mutableStateOf(false)
 
-    fun login(server: String, username: String, password: String, onSuccess: () -> Unit) {
+    fun login(
+        server: String,
+        username: String,
+        password: String,
+        apiKey: String,
+        useApiKey: Boolean,
+        onSuccess: () -> Unit
+    ) {
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
             try {
-                repository.setBaseUrl(server)
-                repository.login(username, password)
-                preferences.saveAuthCredentials(repository.getClient().auth().credentials)
-                preferences.saveBaseUrl(server)
+                kavita4JService.setBaseUrl(server)
+                authService.login(
+                    username = username,
+                    password = password,
+                    apikey = apiKey,
+                    useApiKey = useApiKey
+                )
                 onSuccess()
-            } catch (e: Exception) {
-                errorMessage = "Ошибка входа: ${e.message}"
-            } finally {
-                isLoading = false
+            } catch (e: KavifyException) {
+                errorMessage = e.message
             }
-        }
-    }
-
-    fun loginWithApiKey(server: String, apiKey: String, onSuccess: () -> Unit) {
-        viewModelScope.launch {
-            isLoading = true
-            errorMessage = null
-            try {
-                repository.setBaseUrl(server)
-                repository.login(apiKey)
-                preferences.saveAuthCredentials(repository.getClient().auth().credentials)
-                preferences.saveBaseUrl(server)
-                onSuccess()
-            } catch (e: Exception) {
+            catch (e: Exception) {
                 errorMessage = "Ошибка входа: ${e.message}"
             } finally {
                 isLoading = false

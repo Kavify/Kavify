@@ -95,19 +95,17 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                    if (useApiKey) {
-                        viewModel.loginWithApiKey(serverAddress, apiKey) {
-                            // TODO вынести в отдельную функцию переходы
-                            // TODO вынести в Auth различные виды авторизации
-                            navController.navigate(Routes.SEARCH.path) {
-                                popUpTo(Routes.LOGIN.path) { inclusive = true }
-                            }
-                        }
-                    } else {
-                        viewModel.login(serverAddress, login, password) {
-                            navController.navigate(Routes.SEARCH.path) {
-                                popUpTo(Routes.LOGIN.path) { inclusive = true }
-                            }
+                    viewModel.login(
+                        server = serverAddress,
+                        username = login,
+                        password = password,
+                        apiKey = apiKey,
+                        useApiKey = useApiKey
+                    ) {
+                        // TODO вынести в отдельную функцию переходы
+                        // TODO вынести в Auth различные виды авторизации
+                        navController.navigate(Routes.SEARCH.path) {
+                            popUpTo(Routes.LOGIN.path) { inclusive = true }
                         }
                     }
                 },

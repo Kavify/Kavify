@@ -11,13 +11,7 @@ import ru.feryafox.kavify.presentation.ui.screens.LoginScreen
 fun AppNavGraph(startDestination: String, navController: NavHostController) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(Routes.LOGIN.path) {
-            LoginScreen(
-                onLoginSuccess = {
-                    navController.navigate(Routes.SEARCH.path) {
-                        popUpTo(Routes.LOGIN.path) { inclusive = true }
-                    }
-                }
-            )
+            LoginScreen(navController = navController)
         }
 
         composable(Routes.SEARCH.path) {
