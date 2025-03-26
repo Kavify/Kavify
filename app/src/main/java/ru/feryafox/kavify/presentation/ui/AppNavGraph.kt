@@ -1,5 +1,6 @@
 package ru.feryafox.kavify.presentation.ui
 
+import SettingsScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,6 +17,10 @@ fun AppNavGraph(startDestination: String, navController: NavHostController) {
 
         composable(Routes.SEARCH.path) {
             BookListScreen(navController = navController)
+        }
+
+        composable(Routes.SETTING.path) {
+            SettingsScreen(navController = navController)
         }
 
 //        composable("book/{id}") { backStackEntry ->
