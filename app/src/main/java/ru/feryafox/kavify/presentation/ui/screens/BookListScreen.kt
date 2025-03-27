@@ -1,4 +1,4 @@
-package ru.feryafoxfkavify.presentation.ui.screens
+package ru.feryafox.kavify.presentation.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize

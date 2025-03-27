@@ -3,7 +3,7 @@ activityComposeVersion = "1.10.1"
 agp = "8.8.0"
 hiltAndroidGradlePlugin = "2.48"
 hiltNavigationCompose = "1.2.0"
-kavita4j = "0.0.8"
+kavita4j = "0.0.9"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -38,7 +38,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-kavita4j = { module = "com.github.FeryaFox:Kavita4J", version.ref = "kavita4j" }
+kavita4j = { module = "com.github.Kavify:Kavita4J", version.ref = "kavita4j" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
