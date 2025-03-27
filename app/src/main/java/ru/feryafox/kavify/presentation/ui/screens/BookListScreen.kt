@@ -1,4 +1,4 @@
-package ru.feryafox.kavify.presentation.ui.screens
+package ru.feryafoxfkavify.presentation.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,7 +41,10 @@ fun BookListScreen(
                     if (isSearching) {
                         TextField(
                             value = searchQuery,
-                            onValueChange = { searchQuery = it },
+                            onValueChange = {
+                                searchQuery = it
+
+                            },
                             placeholder = { Text("Поиск...") },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
