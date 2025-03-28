@@ -1,6 +1,7 @@
 [versions]
 activityComposeVersion = "1.10.1"
 agp = "8.8.0"
+coilCompose = "2.4.0"
 hiltAndroidGradlePlugin = "2.48"
 hiltNavigationCompose = "1.2.0"
 kavita4j = "0.0.9"
@@ -22,6 +23,7 @@ androidx-activity-compose-v1101 = { module = "androidx.activity:activity-compose
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidGradlePlugin" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroidGradlePlugin" }

@@ -7,7 +7,7 @@ import ru.feryafox.kavita4j.models.responses.search.SeriesItem
 data class Series(
     val seriesId: Int,
     val name: String,
-    val apiKey: String
+    val coverUrl: String
 ) {
     companion object {
         fun from(seriesItem: SeriesItem, baseUrl: String, apiKey: String): Series =
@@ -20,7 +20,8 @@ data class Series(
         fun from(seriesItems: List<SeriesItem>, baseUrl: String, apiKey: String): List<Series> =
             seriesItems.map { from(it, baseUrl, apiKey) }
 
-        fun List<SeriesItem>.from(baseUrl: String, apiKey: String): List<Series> =
-            this.map { from(it, baseUrl, apiKey) }
     }
 }
+
+fun List<SeriesItem>.from(baseUrl: String, apiKey: String): List<Series> =
+    this.map { Series.from(it, baseUrl, apiKey) }

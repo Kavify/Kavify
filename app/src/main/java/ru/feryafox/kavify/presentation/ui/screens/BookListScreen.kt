@@ -18,11 +18,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import ru.feryafox.kavify.presentation.ui.Routes
 import ru.feryafox.kavify.presentation.viewmodels.BookListViewModel
 import ru.feryafox.kavify.presentation.ui.components.BookCard
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +32,7 @@ fun BookListScreen(
     navController: NavHostController,
     viewModel: BookListViewModel = hiltViewModel()
 ) {
-    val books = viewModel.books
+    val books by viewModel.books.collectAsState()
     var isSearching by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
 
@@ -43,7 +45,7 @@ fun BookListScreen(
                             value = searchQuery,
                             onValueChange = {
                                 searchQuery = it
-
+                                viewModel.searchBook(searchQuery)
                             },
                             placeholder = { Text("Поиск...") },
                             singleLine = true,
@@ -71,6 +73,7 @@ fun BookListScreen(
                     if (isSearching) {
                         IconButton(onClick = {
                             searchQuery = ""
+                            viewModel.searchBook("") // Очистить результат
                             isSearching = false
                         }) {
                             Icon(
@@ -114,7 +117,7 @@ fun BookListScreen(
         ) {
             items(books) { book ->
                 BookCard(book = book) {
-                    navController.navigate("book/${book.id}")
+                    navController.navigate("book")
                 }
             }
         }

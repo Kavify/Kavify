@@ -49,4 +49,12 @@ class PreferencesManager @Inject constructor(
             .putString(REFRESH_TOKEN_KEY, "")
             .putBoolean(IS_AUTHED_KEY, false)
     }
+
+    fun getAuthCredentials() = Kavita4JAuthCredentials(
+        prefs.getString(USERNAME_KEY, "") ?: "",
+        prefs.getString(PASSWORD_KEY, "") ?: "",
+        prefs.getString(API_KEY_KEY, "") ?: "",
+        prefs.getString(ACCESS_TOKEN_KEY, "") ?: "",
+        prefs.getString(REFRESH_TOKEN_KEY, "") ?: ""
+    )
 }

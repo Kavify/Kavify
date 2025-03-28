@@ -9,6 +9,7 @@ import ru.feryafox.kavify.data.repositories.PreferencesManager
 import ru.feryafox.kavify.presentation.ui.AppNavGraph
 import ru.feryafox.kavify.presentation.ui.Routes
 import ru.feryafox.kavify.presentation.ui.theme.KavifyTheme
+import ru.feryafox.kavify.startup.StartupInitializer
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -16,8 +17,14 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var preferencesManager: PreferencesManager
 
+    @Inject
+    lateinit var startupInitializer: StartupInitializer
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        startupInitializer.initialize()
+
         setContent {
             KavifyTheme {
                 val navController = rememberNavController()

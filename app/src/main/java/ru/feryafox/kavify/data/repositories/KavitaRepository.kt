@@ -21,12 +21,10 @@ class KavitaRepository(
         get() = client.auth().credentials.apiKey
 
     var baseUrl: String
-        get() = client.
+        get() = client.auth().baseUrl
         set(value) {
-            client.setBaseUrl(value)
+            client.auth().baseUrl = value
         }
-
-    fun setBaseUrl(baseUrl: String) = client.setBaseUrl(baseUrl)
 
     suspend fun login(username: String, password: String): HttpClientResponse<User> =  withContext(Dispatchers.IO) {client.auth().login(username, password) }
 
