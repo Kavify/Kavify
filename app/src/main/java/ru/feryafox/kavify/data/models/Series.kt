@@ -1,7 +1,6 @@
 package ru.feryafox.kavify.data.models
 
 import ru.feryafox.kavify.getImageSeries
-import ru.feryafox.kavita4j.models.responses.search.SearchResultGroup
 import ru.feryafox.kavita4j.models.responses.search.SeriesItem
 
 data class Series(

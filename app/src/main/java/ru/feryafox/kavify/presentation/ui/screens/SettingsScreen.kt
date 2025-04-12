@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import ru.feryafox.kavify.presentation.ui.Routes
 import ru.feryafox.kavify.presentation.viewmodels.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +47,7 @@ fun SettingsScreen(
             Button(
                 onClick = {
                     viewModel.logout()
-                    navController.navigate("login") {
+                    navController.navigate(Routes.LOGIN.path) {
                         popUpTo(0)
                     }
                 },

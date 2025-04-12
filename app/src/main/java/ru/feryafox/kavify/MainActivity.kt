@@ -23,11 +23,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startupInitializer.initialize()
 
         setContent {
             KavifyTheme {
                 val navController = rememberNavController()
+                startupInitializer.initialize(navController)
                 AppNavGraph(getStartDestination(), navController)
             }
         }

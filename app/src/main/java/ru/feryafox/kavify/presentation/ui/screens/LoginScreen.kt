@@ -1,5 +1,6 @@
 package ru.feryafox.kavify.presentation.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -28,6 +29,16 @@ fun LoginScreen(
     var useApiKey by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
+
+    val reason = navController.currentBackStackEntry?.arguments?.getString("reason")
+
+    LaunchedEffect(reason) {
+        reason?.let {
+            if (it == "invalid_token") {
+                Toast.makeText(context, "Сессия истекла. Пожалуйста, войдите снова.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 
     Scaffold(
         topBar = {

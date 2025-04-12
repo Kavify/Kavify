@@ -26,9 +26,13 @@ class KavitaRepository(
             client.auth().baseUrl = value
         }
 
-    suspend fun login(username: String, password: String): HttpClientResponse<User> =  withContext(Dispatchers.IO) {client.auth().login(username, password) }
+    suspend fun login(username: String, password: String): HttpClientResponse<User> = withContext(Dispatchers.IO) {client.auth().login(username, password) }
 
     suspend fun login(apiKey: String): HttpClientResponse<User> = withContext(Dispatchers.IO) { client.auth().login(apiKey) }
 
     suspend fun search(query: String, includeChapterAndFiles: Boolean = false): HttpClientResponse<SearchResultGroup> = withContext(Dispatchers.IO) { client.search().search(query, includeChapterAndFiles) }
+
+    suspend fun getAccountInfo(): HttpClientResponse<User> = withContext(Dispatchers.IO) {
+        client.account().refreshAccount()
+    }
 }
