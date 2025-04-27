@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">10.242.56.8</domain>
-        <!-- TODO добавить сюда возможность все по http -->
-    </domain-config>
+    <base-config cleartextTrafficPermitted="true" />
 </network-security-config>

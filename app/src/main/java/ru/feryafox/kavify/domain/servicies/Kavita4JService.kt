@@ -1,8 +1,9 @@
 package ru.feryafox.kavify.domain.servicies
 
 import ru.feryafox.kavify.data.models.Book
+import ru.feryafox.kavify.data.models.DownloadLink
 import ru.feryafox.kavify.data.models.Series
-import ru.feryafox.kavify.data.models.Series.Companion.from
+import ru.feryafox.kavify.data.models.SeriesInfo
 import ru.feryafox.kavify.data.models.from
 import ru.feryafox.kavify.data.repositories.KavitaRepository
 import ru.feryafox.kavify.data.repositories.PreferencesManager
@@ -34,5 +35,22 @@ class Kavita4JService @Inject constructor(
         } else {
             emptyList()
         }
+    }
+
+    suspend fun getSeriesDetail(
+        book: Book
+    ): SeriesInfo {
+        val metadata = kavitaRepository.getSeriesMetadata(book.id)
+        val responseDetail = kavitaRepository.getSeriesDetail(book.id)
+        val seriesCoverLink = kavitaRepository.getSeriesCoverUrl(book.id)
+
+        return SeriesInfo(
+            book.title,
+            metadata.responseModel().summary,
+            seriesCoverLink.url,
+            responseDetail.responseModel().volumes.map {
+                DownloadLink(it.name, it.id)
+            }
+        )
     }
 }

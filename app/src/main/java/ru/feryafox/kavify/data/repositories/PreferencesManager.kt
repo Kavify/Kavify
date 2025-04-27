@@ -13,6 +13,7 @@ const val PASSWORD_KEY = "password"
 const val API_KEY_KEY = "api_key"
 const val ACCESS_TOKEN_KEY = "access_token"
 const val REFRESH_TOKEN_KEY = "refresh_token"
+const val DOWNLOAD_PATH_KEY = "download_path"
 
 @Singleton
 class PreferencesManager @Inject constructor(
@@ -29,6 +30,12 @@ class PreferencesManager @Inject constructor(
         get() = prefs.getString(BASE_URL_KEY, "") ?: ""
         set(value) = prefs.edit() {
             putString(BASE_URL_KEY, value)
+        }
+
+    var downloadPath: String
+        get() = prefs.getString(DOWNLOAD_PATH_KEY, "") ?: ""
+        set(value) = prefs.edit {
+            putString(DOWNLOAD_PATH_KEY, value)
         }
 
     fun saveAuthCredentials(

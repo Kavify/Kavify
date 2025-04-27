@@ -3,6 +3,9 @@ package ru.feryafox.kavify.presentation.ui.screens
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -11,7 +14,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import ru.feryafox.kavify.presentation.ui.Routes
 import ru.feryafox.kavify.presentation.viewmodels.LoginViewModel
@@ -27,6 +29,7 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     var apiKey by remember { mutableStateOf("") }
     var useApiKey by remember { mutableStateOf(false) }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
@@ -36,6 +39,18 @@ fun LoginScreen(
         reason?.let {
             if (it == "invalid_token") {
                 Toast.makeText(context, "Сессия истекла. Пожалуйста, войдите снова.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    val error = viewModel.errorMessage
+    LaunchedEffect(error) {
+        error?.let {
+            if (it.contains("failed to connect", ignoreCase = true) ||
+                it.contains("unable to resolve host", ignoreCase = true) ||
+                it.contains("timeout", ignoreCase = true)
+            ) {
+                Toast.makeText(context, "Сервис недоступен. Проверьте адрес сервера или подключение к интернету.", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -96,8 +111,18 @@ fun LoginScreen(
                     onValueChange = { password = it },
                     label = { Text("Пароль") },
                     singleLine = true,
-                    visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    trailingIcon = {
+                        val image = if (passwordVisible)
+                            Icons.Default.Visibility
+                        else
+                            Icons.Default.VisibilityOff
+
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(imageVector = image, contentDescription = if (passwordVisible) "Скрыть пароль" else "Показать пароль")
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -113,8 +138,6 @@ fun LoginScreen(
                         apiKey = apiKey,
                         useApiKey = useApiKey
                     ) {
-                        // TODO вынести в отдельную функцию переходы
-                        // TODO вынести в Auth различные виды авторизации
                         navController.navigate(Routes.SEARCH.path) {
                             popUpTo(Routes.LOGIN.path) { inclusive = true }
                         }
@@ -129,10 +152,10 @@ fun LoginScreen(
                 }
             }
 
-            viewModel.errorMessage?.let { error ->
+            error?.let {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = error,
+                    text = it,
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodyMedium
                 )

@@ -13,10 +13,16 @@ class SettingsViewModel @Inject constructor(
     private val preferencesManager: PreferencesManager
 ) : ViewModel() {
     var baseUrlSetting by mutableStateOf(preferencesManager.baseUrl)
-
+    var downloadPathSetting by mutableStateOf("")
+        private set
 
     fun logout() {
        preferencesManager.deleteAuthCredentials()
+    }
+
+    fun setDownloadPath(path: String) {
+        downloadPathSetting = path
+        preferencesManager.downloadPath = path // ✅ сохраняем в SharedPreferences
     }
 //    init {
 //        baseUrlSetting = preferencesManager.baseUrl

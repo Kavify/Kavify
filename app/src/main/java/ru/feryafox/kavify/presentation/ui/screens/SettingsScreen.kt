@@ -1,8 +1,13 @@
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -15,6 +20,22 @@ fun SettingsScreen(
     navController: NavHostController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
+    val folderPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree()
+    ) { uri: Uri? ->
+        uri?.let {
+            context.contentResolver.takePersistableUriPermission(
+                it,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
+
+            val path = it.toString()
+            viewModel.setDownloadPath(path)
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -41,6 +62,25 @@ fun SettingsScreen(
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
+
+            OutlinedTextField(
+                value = viewModel.downloadPathSetting,
+                onValueChange = { },
+                label = { Text("Путь загрузки книг") },
+                placeholder = { Text("/storage/emulated/0/Kavify") },
+                singleLine = true,
+                enabled = false,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Button(
+                onClick = {
+                    folderPickerLauncher.launch(null)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Выбрать папку для загрузки")
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 

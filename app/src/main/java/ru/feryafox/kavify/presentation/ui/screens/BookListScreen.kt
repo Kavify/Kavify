@@ -1,8 +1,10 @@
 package ru.feryafox.kavify.presentation.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -19,11 +21,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
+import ru.feryafox.kavify.data.models.Book
 import ru.feryafox.kavify.presentation.ui.Routes
 import ru.feryafox.kavify.presentation.viewmodels.BookListViewModel
 import ru.feryafox.kavify.presentation.ui.components.BookCard
+import ru.feryafox.kavify.presentation.ui.components.BookDetailContent
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +43,11 @@ fun BookListScreen(
     val books by viewModel.books.collectAsState()
     var isSearching by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
+    var selectedBook by remember { mutableStateOf<Book?>(null) }
+    val coroutineScope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 
     Scaffold(
         topBar = {
@@ -73,7 +86,7 @@ fun BookListScreen(
                     if (isSearching) {
                         IconButton(onClick = {
                             searchQuery = ""
-                            viewModel.searchBook("") // Очистить результат
+                            viewModel.searchBook("")
                             isSearching = false
                         }) {
                             Icon(
@@ -117,9 +130,43 @@ fun BookListScreen(
         ) {
             items(books) { book ->
                 BookCard(book = book) {
-                    navController.navigate("book")
+                    selectedBook = book
+                    viewModel.loadSeriesDetail(book)
+                    coroutineScope.launch {
+                        sheetState.show()
+                    }
                 }
             }
         }
     }
+
+    selectedBook?.let { book ->
+        ModalBottomSheet(
+            onDismissRequest = {
+                coroutineScope.launch {
+                    sheetState.hide()
+                }.invokeOnCompletion {
+                    selectedBook = null
+                }
+            },
+            sheetState = sheetState
+        ) {
+            if (viewModel.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                viewModel.seriesDetail?.let { book ->
+                    BookDetailContent(book)
+                }
+            }
+        }
+
+    }
+
 }
