@@ -5,7 +5,7 @@ coilCompose = "2.4.0"
 documentfile = "1.0.1"
 hiltAndroidGradlePlugin = "2.48"
 hiltNavigationCompose = "1.2.0"
-kavita4j = "0.1.1"
+kavita4j = "0.1.2"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -18,6 +18,7 @@ material3 = "1.3.1"
 navigationCompose = "2.8.9"
 ui = "1.7.8"
 uiToolingPreview = "1.7.8"
+foundationLayoutAndroid = "1.7.2"
 
 [libraries]
 androidx-activity-compose-v1101 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
@@ -47,6 +48,7 @@ kavita4j = { module = "com.github.Kavify:Kavita4J", version.ref = "kavita4j" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
+androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
