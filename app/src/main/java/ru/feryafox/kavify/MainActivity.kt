@@ -15,8 +15,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        PreferencesManagerFactory.init(applicationContext)
-
         setContent {
             KavifyTheme {
                 val navController = rememberNavController()

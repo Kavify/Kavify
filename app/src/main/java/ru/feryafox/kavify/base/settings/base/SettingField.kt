@@ -1,15 +1,13 @@
 package ru.feryafox.kavify.base.settings.base
 
 import androidx.compose.runtime.Composable
+import ru.feryafox.kavify.base.storages.base.StorageField
 
 interface SettingField<T> {
-    val key: String
     val title: String
-    var field: T
-    fun getFieldString(): String = field.toString()
-    fun loadField(value: String)
+    val field: StorageField<*>
     val component: @Composable (T) -> Unit
-    val onUpdate: () -> Unit
+    val onUpdate: (T) -> Unit
     val isOnUpdateBehavior: OnUpdateBehavior
     val isUpdated: Boolean
 }

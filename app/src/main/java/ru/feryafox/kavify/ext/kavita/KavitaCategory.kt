@@ -20,11 +20,11 @@ class KavitaCategory @Inject constructor(): Category{
 
     override val items: List<CategoryItem>
         get() = listOf(
-            KavitaCategoryItem(
-                "Поиск",
-                id = "kavita-search",
-
-            )
+//            KavitaCategoryItem(
+//                "Поиск",
+//                id = "kavita-search",
+//
+//            )
         )
 
     override val id: String
