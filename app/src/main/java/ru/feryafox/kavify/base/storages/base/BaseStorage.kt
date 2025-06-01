@@ -1,4 +1,4 @@
-package ru.feryafox.kavify.data.repositories.storages.base
+package ru.feryafox.kavify.base.storages.base
 
 abstract class BaseStorage(
     val id: String,
