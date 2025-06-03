@@ -5,10 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import ru.feryafox.kavify.data.repositories.preferences.PreferencesManagerFactory
-import ru.feryafox.kavify.presentation.ui.AppNavGraph
-import ru.feryafox.kavify.presentation.ui.Routes
-import ru.feryafox.kavify.presentation.ui.theme.KavifyTheme
+import ru.feryafox.yokailib.root.ui.AppNavGraph
+import ru.feryafox.yokailib.root.ui.Routes
+import ru.feryafox.yokailib.root.ui.themes.YokiaLibTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -16,10 +15,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            KavifyTheme {
+            YokiaLibTheme {
                 val navController = rememberNavController()
                 AppNavGraph(Routes.MAIN.path, navController)
             }
         }
     }
 }
+

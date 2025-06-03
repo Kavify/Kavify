@@ -40,7 +40,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.7.3"
+        kotlinCompilerExtensionVersion = "1.7.3"   // ← то же число, что в YokaiLib
     }
 }
 
@@ -66,7 +66,6 @@ dependencies {
 
     implementation(libs.ui)
     implementation(libs.material3)
-    implementation(libs.androidx.activity.compose.v1101)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.ui.tooling.preview)
 
@@ -78,5 +77,8 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.coil.compose)
     implementation(libs.androidx.documentfile)
-    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.yokailib)
+
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.runtime)
 }
