@@ -18,7 +18,7 @@ class KavitaCategory @Inject constructor(): Category{
     override val items: List<CategoryItem>
         get() = listOf(
             KavitaCategoryItem(
-                "Поиск",
+                "Поиск по категорию",
                 id = "kavita-search"
             ) {
                 Text("Здесь будет поиск по Kavita")

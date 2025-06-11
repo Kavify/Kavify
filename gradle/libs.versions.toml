@@ -19,7 +19,7 @@ navigationCompose = "2.9.0"
 ui = "1.8.2"
 uiToolingPreview = "1.8.2"
 foundationLayoutAndroid = "1.8.2"
-yokailib = "1.0.2"
+yokailib = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,7 +49,8 @@ material3 = { module = "androidx.compose.material3:material3", version.ref = "ma
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
-yokailib = { module = "ru.feryafox.yokailib:YokaiLib", version.ref = "yokailib" }
+#yokailib = { module = "ru.feryafox.yokailib:YokaiLib", version.ref = "yokailib" }
+yokailib = { module = "com.github.Kavify:YokaiLib", version.ref = "yokailib" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

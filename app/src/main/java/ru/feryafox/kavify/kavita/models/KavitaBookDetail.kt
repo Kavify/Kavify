@@ -1,8 +1,8 @@
 package ru.feryafox.kavify.kavita.models
 
-import ru.feryafox.yokailib.models.BookDetail
-import ru.feryafox.yokailib.models.CurrentBookDetail
-import ru.feryafox.yokailib.models.DownloadLink
+import ru.feryafox.kavify.yokailib_ext.models.BookDetail
+import ru.feryafox.kavify.yokailib_ext.models.CurrentBookDetail
+import ru.feryafox.kavify.yokailib_ext.models.DownloadLink
 import java.net.URL
 
 class KavitaBookDetail(
