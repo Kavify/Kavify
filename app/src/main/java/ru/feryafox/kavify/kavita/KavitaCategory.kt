@@ -22,7 +22,14 @@ class KavitaCategory @Inject constructor(): Category{
                 id = "kavita-search"
             ) {
                 Text("Здесь будет поиск по Kavita")
-            }
+            },
+            KavitaCategoryItem(
+                "Мои книги",
+                id = "kavita-my-books"
+            ) {
+                Text("Здесь будут мои книги из Kavita")
+            },
+
         )
 
     override val id: String

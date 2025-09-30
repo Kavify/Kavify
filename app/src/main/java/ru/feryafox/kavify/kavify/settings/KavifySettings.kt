@@ -3,9 +3,11 @@ package ru.feryafox.kavify.kavify.settings
 
 import android.util.Log
 import ru.feryafox.kavify.kavify.KAVIFY_ID
+import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.API_KEY_FIELD
 import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.DOWNLOADING_DIR_FIELD
 import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.IS_PASSWORD_OR_TOKEN_FIELD
 import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.PASSWORD_FIELD
+import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.USERNAME_FIELD
 
 import ru.feryafox.yokailib.settings.base.CategorySettings
 import ru.feryafox.yokailib.settings.base.OnUpdateBehavior
@@ -22,9 +24,10 @@ class KavifySettings @Inject constructor() : CategorySettings(
     title = "Kavify",
     fields = listOf(
         DOWNLOAD_DIR_FIELD_SETTING,
+        USERNAME_SETTING,
         PASSWORD_FIELD_SETTING,
+        API_KEY_SETTING,
         IS_PASSWORD_OR_TOKEN_FIELD_SETTING,
-        FOO
     )
 
 ) {
@@ -37,6 +40,14 @@ class KavifySettings @Inject constructor() : CategorySettings(
                 Log.i("KavifySettings", "Working directory updated: $newValue")
             }
 
+        val USERNAME_SETTING = StringField(
+            title = "Username",
+            field = USERNAME_FIELD,
+            isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED
+        ) { newValue ->
+            Log.i("KavifySettings", "Username updated: $newValue")
+        }
+
         val PASSWORD_FIELD_SETTING = PasswordField(
             title = "Пароль",
             field = PASSWORD_FIELD,
@@ -45,22 +56,24 @@ class KavifySettings @Inject constructor() : CategorySettings(
             Log.i("KavifySettings", "Password updated: $newPass")
         }
 
+        val API_KEY_SETTING = PasswordField(
+            title = "API Key",
+            field = API_KEY_FIELD,
+            isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED
+        ) { newPass ->
+            Log.i("KavifySettings", "API Key updated: $newPass")
+        }
+
         val IS_PASSWORD_OR_TOKEN_FIELD_SETTING = BindableBooleanField(
             title = "Токен или логин/пароль",
             field = IS_PASSWORD_OR_TOKEN_FIELD,
             isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED,
             immediatelyOnUpdate = {},
             bindScope = bind {
+                USERNAME_SETTING disabledWhen  true
                 PASSWORD_FIELD_SETTING disabledWhen true
+                API_KEY_SETTING disabledWhen false
             },
-            onUpdate = {}
-        )
-
-        val FOO = BooleanField(
-            title = "Foo",
-            field = IS_PASSWORD_OR_TOKEN_FIELD,
-            isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED,
-            immediatelyOnUpdate = {},
             onUpdate = {}
         )
     }
