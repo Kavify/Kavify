@@ -2,8 +2,12 @@ package ru.feryafox.kavify.kavita
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import ru.feryafox.kavify.kavify.settings.KavifySettings
+import ru.feryafox.kavify.kavita.api.Kavita4JManager
 import ru.feryafox.yokailib.categories.Category
 import ru.feryafox.yokailib.categories.CategoryItem
+import ru.feryafox.yokailib.settings.base.SettingField
+import ru.feryafox.yokailib.utils.HasSettingFields
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,7 +15,10 @@ import javax.inject.Singleton
 val CATEGORY_NAME = "kavita"
 
 @Singleton
-class KavitaCategory @Inject constructor(): Category{
+class KavitaCategory @Inject constructor(
+    private val settings: KavifySettings,
+    private val kavita4JManager: Kavita4JManager
+): Category, HasSettingFields{
     override val title: String
         get() = "Kavita"
 
@@ -34,6 +41,9 @@ class KavitaCategory @Inject constructor(): Category{
 
     override val id: String
         get() = CATEGORY_NAME
+
+    override val fieldsForValidation: List<SettingField<*>>
+        get() = settings.fields.filter { it.required }
 }
 
 data class KavitaCategoryItem(

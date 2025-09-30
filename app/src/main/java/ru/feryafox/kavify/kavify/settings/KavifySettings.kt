@@ -7,6 +7,7 @@ import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.API_KEY_FIELD
 import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.DOWNLOADING_DIR_FIELD
 import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.IS_PASSWORD_OR_TOKEN_FIELD
 import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.PASSWORD_FIELD
+import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.URL_FIELD
 import ru.feryafox.kavify.kavify.storages.KavifyStorage.Companion.USERNAME_FIELD
 
 import ru.feryafox.yokailib.settings.base.CategorySettings
@@ -23,25 +24,28 @@ class KavifySettings @Inject constructor() : CategorySettings(
     id = KAVIFY_ID,
     title = "Kavify",
     fields = listOf(
-        DOWNLOAD_DIR_FIELD_SETTING,
+        URL_FIELD_SETTING,
         USERNAME_SETTING,
         PASSWORD_FIELD_SETTING,
         API_KEY_SETTING,
         IS_PASSWORD_OR_TOKEN_FIELD_SETTING,
+        DOWNLOAD_DIR_FIELD_SETTING,
     )
-
 ) {
     companion object {
-        val DOWNLOAD_DIR_FIELD_SETTING = DirectoryField(
-                title = "Директория загрузки",
-                field = DOWNLOADING_DIR_FIELD,
-                isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED
-            ) { newValue ->
-                Log.i("KavifySettings", "Working directory updated: $newValue")
-            }
+        val URL_FIELD_SETTING = UrlField(
+            title = "URL сервера",
+            required = true,
+            field = URL_FIELD,
+            isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED,
+            validateUrl = true
+        ) { newUrl ->
+            Log.i("KavifySettings", "Server URL updated: $newUrl")
+        }
 
         val USERNAME_SETTING = StringField(
-            title = "Username",
+            title = "Имя пользователя",
+            required = true,
             field = USERNAME_FIELD,
             isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED
         ) { newValue ->
@@ -50,6 +54,7 @@ class KavifySettings @Inject constructor() : CategorySettings(
 
         val PASSWORD_FIELD_SETTING = PasswordField(
             title = "Пароль",
+            required = true,
             field = PASSWORD_FIELD,
             isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED
         ) { newPass ->
@@ -58,6 +63,7 @@ class KavifySettings @Inject constructor() : CategorySettings(
 
         val API_KEY_SETTING = PasswordField(
             title = "API Key",
+            required = true,
             field = API_KEY_FIELD,
             isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED
         ) { newPass ->
@@ -70,11 +76,19 @@ class KavifySettings @Inject constructor() : CategorySettings(
             isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED,
             immediatelyOnUpdate = {},
             bindScope = bind {
-                USERNAME_SETTING disabledWhen  true
+                USERNAME_SETTING disabledWhen true
                 PASSWORD_FIELD_SETTING disabledWhen true
-                API_KEY_SETTING disabledWhen false
+                API_KEY_SETTING enabledWhen  true
             },
             onUpdate = {}
         )
+
+        val DOWNLOAD_DIR_FIELD_SETTING = DirectoryField(
+            title = "Директория загрузки",
+            field = DOWNLOADING_DIR_FIELD,
+            isOnUpdateBehavior = OnUpdateBehavior.ON_CHANGED
+        ) { newValue ->
+            Log.i("KavifySettings", "Working directory updated: $newValue")
+        }
     }
 }

@@ -17,7 +17,8 @@ class KavifyStorage @Inject constructor() : BaseStorage(
         API_KEY_FIELD,
         USERNAME_FIELD,
         PASSWORD_FIELD,
-        IS_PASSWORD_OR_TOKEN_FIELD
+        IS_PASSWORD_OR_TOKEN_FIELD,
+        URL_FIELD
     )
 ) {
     companion object {
@@ -49,6 +50,12 @@ class KavifyStorage @Inject constructor() : BaseStorage(
             id = KAVIFY_ID,
             key = "is_password_or_token",
             initValue = true
+        )
+
+        val URL_FIELD = UrlStorageField(
+            id = KAVIFY_ID,
+            key = "url",
+            initValue = ""
         )
     }
 }
