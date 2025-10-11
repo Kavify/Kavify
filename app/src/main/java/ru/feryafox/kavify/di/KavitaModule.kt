@@ -17,9 +17,8 @@ object KavitaModule {
     @Singleton
     fun provideKavitaApiManager(
         kavifyStorage: KavifyStorage,
-        kavita4J: Kavita4J
     ): Kavita4JManager {
-        return Kavita4JManager(kavifyStorage, kavita4J)
+        return Kavita4JManager(kavifyStorage)
     }
 
     @Provides

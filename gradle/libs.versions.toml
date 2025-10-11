@@ -1,26 +1,30 @@
 [versions]
-agp = "8.9.3"
-coilCompose = "2.4.0"
+agp = "8.13.0"
+coilCompose = "2.7.0"
 documentfile = "1.1.0"
-hilt = "2.52"
-hiltNavigationCompose = "1.2.0"
-kavita4j = "0.1.2"
-kotlin = "2.1.21"
-coreKtx = "1.16.0"
+hilt = "2.57.2"
+hiltNavigationCompose = "1.3.0"
+kavita4j = "0.1.4-LOCAL"
+kotlin = "2.2.20"
+ksp = "2.1.21-2.0.2"
+coreKtx = "1.17.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.9.0"
-activityCompose = "1.10.1"
-composeBom = "2025.05.01"
-material3 = "1.3.2"
-navigationCompose = "2.9.0"
-ui = "1.8.2"
-uiToolingPreview = "1.8.2"
-foundationLayoutAndroid = "1.8.2"
-yokailib = "1.4.2-LOCAL"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+kotlinxSerializationJson = "1.9.0"
+lifecycleRuntimeKtx = "2.9.4"
+activityCompose = "1.11.0"
+composeBom = "2025.09.01"
+material3 = "1.4.0"
+materialIconsExtended = "1.7.8"
+navigationCompose = "2.9.5"
+ui = "1.9.2"
+uiToolingPreview = "1.9.2"
+foundationLayoutAndroid = "1.9.2"
+yokailib = "1.5.4.8-LOCAL"
 
 [libraries]
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -38,7 +42,9 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
 androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
-kavita4j = { module = "com.github.Kavify:Kavita4J", version.ref = "kavita4j" }
+#kavita4j = { module = "com.github.Kavify:Kavita4J", version.ref = "kavita4j" }
+kavita4j = { module = "ru.feryafox:Kavita4J", version.ref = "kavita4j" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
@@ -55,3 +61,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
