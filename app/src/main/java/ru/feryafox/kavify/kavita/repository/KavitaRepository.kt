@@ -11,6 +11,8 @@ import ru.feryafox.kavita4j.models.responses.account.User
 import ru.feryafox.kavita4j.models.responses.search.SearchResultGroup
 import ru.feryafox.kavita4j.models.responses.series.Series
 import ru.feryafox.kavita4j.models.responses.series.SeriesDetail
+import ru.feryafox.kavita4j.models.responses.series.RecentlyAddedItems
+import ru.feryafox.kavita4j.models.responses.series.SeriesDtoList
 
 class KavitaRepository(
     private val client: Kavita4J
@@ -50,5 +52,21 @@ class KavitaRepository(
 
     suspend fun getAccountInfo(): HttpClientResponse<User> = withContext(Dispatchers.IO) {
         client.account().refreshAccount()
+    }
+
+    suspend fun getOnDeckSeries(libraryId: Int, pageSize: Int, page: Int): HttpClientResponse<SeriesDtoList> = withContext(Dispatchers.IO) {
+        client.series().onDeck(libraryId, pageSize, page)
+    }
+
+    suspend fun getRecentlyUpdatedSeries(): HttpClientResponse<RecentlyAddedItems> = withContext(Dispatchers.IO) {
+        client.series().recentlyUpdateSeries()
+    }
+
+    suspend fun searchSeries(query: String, includeChapterAndFiles: Boolean = false) = withContext(Dispatchers.IO) {
+        client.search().search(query, includeChapterAndFiles)
+    }
+
+    suspend fun getSeriesDetailWithVolumes(seriesId: Int) = withContext(Dispatchers.IO) {
+        client.series().getSeriesDetail(seriesId)
     }
 }

@@ -141,16 +141,41 @@ class Kavita4JManager @Inject constructor(
                         authValidation.setError(AuthErrorType.INVALID_API_KEY)
                         return@withContext false
                     }
-                    client.auth().login(apiKey)
-                    Log.d(TAG, "Loaded API key credentials")
+                    try {
+                        client.auth().login(apiKey)
+                        Log.d(TAG, "Loaded API key credentials")
+                    } catch (npe: NullPointerException) {
+                        // Library bug: response.responseModel() может быть null даже при успешном ответе
+                        Log.w(TAG, "NPE during login, but checking if credentials were actually set", npe)
+                        // Проверяем, установились ли credentials несмотря на NPE
+                        if (client.auth().accessToken.isNullOrEmpty()) {
+                            Log.e(TAG, "Login failed: access token is null")
+                            authValidation.setError(AuthErrorType.INVALID_API_KEY)
+                            return@withContext false
+                        }
+                        Log.d(TAG, "Credentials were set despite NPE, continuing...")
+                    }
                 } else {
                     if (username.isEmpty() || password.isEmpty()) {
                         Log.e(TAG, "Cannot authenticate: Username or password is empty")
                         authValidation.setError(AuthErrorType.INVALID_CREDENTIALS)
                         return@withContext false
                     }
-                    client.auth().login(username, password)
-                    Log.d(TAG, "Loaded username/password credentials")
+                    try {
+                        client.auth().login(username, password)
+                        Log.d(TAG, "Loaded username/password credentials")
+                    } catch (npe: NullPointerException) {
+                        // TODO разобраться с этим багом
+                        // Library bug: response.responseModel() может быть null даже при успешном ответе
+                        Log.w(TAG, "NPE during login, but checking if credentials were actually set", npe)
+                        // Проверяем, установились ли credentials несмотря на NPE
+                        if (client.auth().accessToken.isNullOrEmpty()) {
+                            Log.e(TAG, "Login failed: access token is null")
+                            authValidation.setError(AuthErrorType.INVALID_CREDENTIALS)
+                            return@withContext false
+                        }
+                        Log.d(TAG, "Credentials were set despite NPE, continuing...")
+                    }
                 }
 
                 saveCredentials()
