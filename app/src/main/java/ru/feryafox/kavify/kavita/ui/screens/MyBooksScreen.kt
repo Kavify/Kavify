@@ -14,10 +14,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
+import ru.feryafox.kavify.kavita.ui.models.Book
+import ru.feryafox.kavify.kavita.ui.utils.Image
 import ru.feryafox.kavify.kavita.viewmodels.MyBooksUiState
 import ru.feryafox.kavify.kavita.viewmodels.MyBooksViewModel
-import ru.feryafox.kavita4j.models.responses.series.SeriesDto
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,7 +85,7 @@ fun MyBooksScreen(
 
 @Composable
 private fun BooksList(
-    books: List<SeriesDto>,
+    books: List<Book>,
     onSeriesClick: (Int) -> Unit
 ) {
     LazyColumn(
@@ -95,7 +95,7 @@ private fun BooksList(
         items(books) { book ->
             BookItem(
                 book = book,
-                onClick = { onSeriesClick(book.id) }
+                onClick = { onSeriesClick(book.series.id) }
             )
         }
     }
@@ -103,7 +103,7 @@ private fun BooksList(
 
 @Composable
 private fun BookItem(
-    book: SeriesDto,
+    book: Book,
     onClick: () -> Unit
 ) {
     Card(
@@ -117,10 +117,9 @@ private fun BookItem(
                 .fillMaxWidth()
                 .padding(12.dp)
         ) {
-            // Book cover
-            AsyncImage(
-                model = book.coverImage,
-                contentDescription = "Обложка ${book.name}",
+            Image(
+                url = book.coverUrl ?: "",
+                contentDescription = "Обложка ${book.series.name}",
                 modifier = Modifier
                     .width(80.dp)
                     .height(120.dp),
@@ -129,7 +128,6 @@ private fun BookItem(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            // Book info
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -138,7 +136,7 @@ private fun BookItem(
             ) {
                 Column {
                     Text(
-                        text = book.name,
+                        text = book.series.name,
                         style = MaterialTheme.typography.titleMedium,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
@@ -146,10 +144,9 @@ private fun BookItem(
 
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    // Original name if different
-                    if (book.originalName != book.name) {
+                    if (book.series.originalName != book.series.name) {
                         Text(
-                            text = book.originalName,
+                            text = book.series.originalName,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1,
@@ -160,22 +157,20 @@ private fun BookItem(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Страниц: ${book.pages}",
+                        text = "Страниц: ${book.series.pages}",
                         style = MaterialTheme.typography.bodyMedium
                     )
 
-                    if (book.pagesRead > 0) {
+                    if (book.series.pagesRead > 0) {
                         Text(
-                            text = "Прочитано: ${book.pagesRead} из ${book.pages}",
+                            text = "Прочитано: ${book.series.pagesRead} из ${book.series.pages}",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
-
-                // Library name
                 Text(
-                    text = book.libraryName ?: "",
+                    text = book.series.libraryName ?: "",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

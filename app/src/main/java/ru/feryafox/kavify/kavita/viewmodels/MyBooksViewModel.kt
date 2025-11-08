@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.feryafox.kavify.kavita.repository.KavitaRepository
+import ru.feryafox.kavify.kavita.ui.models.Book
 import ru.feryafox.kavita4j.models.responses.series.SeriesDto
 import javax.inject.Inject
 
@@ -27,29 +28,26 @@ class MyBooksViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = MyBooksUiState.Loading
             try {
-                // Try to get onDeck books first
                 val onDeckResponse = repository.getOnDeckSeries(1, 20, 0)
 
-                if (onDeckResponse.statusCode() == 200 &&
-                    onDeckResponse.responseModel() != null &&
-                    onDeckResponse.responseModel().seriesDto.isNotEmpty()) {
-                    _uiState.value = MyBooksUiState.Success(onDeckResponse.responseModel().seriesDto)
-                } else {
-                    // If no onDeck books, get recently updated
-                    val recentlyUpdatedResponse = repository.getRecentlyUpdatedSeries()
-                    if (recentlyUpdatedResponse.statusCode() == 200 &&
-                        recentlyUpdatedResponse.responseModel() != null &&
-                        recentlyUpdatedResponse.responseModel().items.isNotEmpty()) {
-                        // Get full series info for recently updated items
-                        val seriesList = mutableListOf<SeriesDto>()
-                        recentlyUpdatedResponse.responseModel().items.take(10).forEach { item ->
-                            val seriesResponse = repository.getOnDeckSeries(1, 1, 0)
-                            // For now, just show empty state
+                if (onDeckResponse.statusCode() == 200 && onDeckResponse.responseModel() != null) {
+                    val books = onDeckResponse.responseModel().seriesDto.map { seriesDto ->
+                        val seriesDetailResponse = repository.getSeriesDetail(seriesDto.id)
+                        val coverUrl = if (seriesDetailResponse.isSuccess) {
+                            val volumeId = seriesDetailResponse.responseModel()?.volumes?.firstOrNull()?.id ?: 0
+                            repository.getSeriesCoverUrl(volumeId)
+                        } else {
+                            null
                         }
-                        _uiState.value = MyBooksUiState.Empty
-                    } else {
-                        _uiState.value = MyBooksUiState.Error(recentlyUpdatedResponse.errorMessage() ?: "Unknown error")
+                        Book(series = seriesDto, coverUrl = coverUrl)
                     }
+                    if (books.isNotEmpty()) {
+                        _uiState.value = MyBooksUiState.Success(books)
+                    } else {
+                        _uiState.value = MyBooksUiState.Empty
+                    }
+                } else {
+                    _uiState.value = MyBooksUiState.Error(onDeckResponse.errorMessage() ?: "Unknown error")
                 }
             } catch (e: Exception) {
                 _uiState.value = MyBooksUiState.Error(e.message ?: "Unknown error")
@@ -65,6 +63,6 @@ class MyBooksViewModel @Inject constructor(
 sealed class MyBooksUiState {
     object Loading : MyBooksUiState()
     object Empty : MyBooksUiState()
-    data class Success(val books: List<SeriesDto>) : MyBooksUiState()
+    data class Success(val books: List<Book>) : MyBooksUiState()
     data class Error(val message: String) : MyBooksUiState()
 }

@@ -32,7 +32,7 @@ class KavitaCategory @Inject constructor(
     override val items: List<CategoryItem>
         get() = listOf(
             KavitaCategoryItem(
-                "Поиск по категории",
+                "Поиск",
                 id = "kavita-search"
             ) {
                 val navController = rememberNavController()
